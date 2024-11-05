@@ -6,15 +6,13 @@ import org.example.couponjpaproject.beans.Customer;
 import org.example.couponjpaproject.services.CustomerServices;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 public class CustomerController extends ClientController {
 
     CustomerServices service;
@@ -33,7 +31,6 @@ public class CustomerController extends ClientController {
     @PostMapping("/purchase")
     public void purchaseCoupon(@RequestBody Coupon coupon) throws OwnedCouponException, CouponIsExpiredException {
         service.purchaseCoupon(coupon);
-
     }
 
     @GetMapping("getcoupons1")

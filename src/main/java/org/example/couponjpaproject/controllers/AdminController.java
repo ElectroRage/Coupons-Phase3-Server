@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class AdminController extends ClientController {
 
     AdminServices service;
@@ -22,7 +23,6 @@ public class AdminController extends ClientController {
 
     @Override
     @PostMapping("/login")
-    //requestparam is default
     public boolean login(@RequestParam String email, String password) {
         return false;
     }
