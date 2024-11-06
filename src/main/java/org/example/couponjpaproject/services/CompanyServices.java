@@ -30,11 +30,10 @@ public class CompanyServices implements ClientServices {
 
     public boolean login(String email, String password) {
         if (comRep.existsByEmailAndPassword(email, password)) {
-            this.companyId = comRep.getCompanyId(email, password);
+            companyId = comRep.getCompanyId(email, password);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public void addCoupon(Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {

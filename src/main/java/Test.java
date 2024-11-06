@@ -1,6 +1,6 @@
-import org.example.couponjpaproject.Job.CouponExpirationDailyJob;
-import org.example.couponjpaproject.LoginManager.ClientType;
-import org.example.couponjpaproject.LoginManager.LoginManager;
+import org.example.couponjpaproject.job.CouponExpirationDailyJob;
+import org.example.couponjpaproject.login_manager.ClientType;
+import org.example.couponjpaproject.login_manager.LoginManager;
 import org.example.couponjpaproject.beans.Category;
 import org.example.couponjpaproject.beans.Company;
 import org.example.couponjpaproject.beans.Coupon;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class Test implements CommandLineRunner {
+public class Test{ //implements CommandLineRunner
 
     private CouponExpirationDailyJob job;
     private LoginManager loginManager;
@@ -32,28 +32,28 @@ public class Test implements CommandLineRunner {
     }
 
 
-    @Override
-    public void run(String... args) {
-        // go through admin service again
-        // need to check all the delete methods and how they work by accociation
-        try {
-            banner();
-            testAdmin();
-            testCompany();
-            testCustomer();
-            Thread t = new Thread(job);
-            jobObjects();
-            t.start();
-            job.stop();
-            testServices.dropSchema();
-        } catch (RuntimeException | CouponIsExpiredException | CompanyMayNotExistException |
-                 CompanyAlreadyExistsException | OwnedCouponException | CouponMayAlreadyExistException |
-                 CustomerMayNotExistException | CustomerAlreadyExistsException | CouponMayNotExistException e) {
-            testServices.dropSchema();
-            System.out.println(e.getMessage());
-        }
-
-    }
+//    @Override
+//    public void run(String... args) {
+//        // go through admin service again
+//        // need to check all the delete methods and how they work by accociation
+//        try {
+//            banner();
+//            testAdmin();
+//            testCompany();
+//            testCustomer();
+//            Thread t = new Thread(job);
+//            jobObjects();
+//            t.start();
+//            job.stop();
+//            testServices.dropSchema();
+//        } catch (RuntimeException | CouponIsExpiredException | CompanyMayNotExistException |
+//                 CompanyAlreadyExistsException | OwnedCouponException | CouponMayAlreadyExistException |
+//                 CustomerMayNotExistException | CustomerAlreadyExistsException | CouponMayNotExistException e) {
+//            testServices.dropSchema();
+//            System.out.println(e.getMessage());
+//        }
+//
+//    }
 
     public void testAdmin() throws CompanyAlreadyExistsException, CompanyMayNotExistException, CustomerAlreadyExistsException, CustomerMayNotExistException {
 

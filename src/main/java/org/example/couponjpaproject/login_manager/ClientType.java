@@ -1,4 +1,4 @@
-package org.example.couponjpaproject.LoginManager;
+package org.example.couponjpaproject.login_manager;
 
 public enum ClientType {
     Administrator,
