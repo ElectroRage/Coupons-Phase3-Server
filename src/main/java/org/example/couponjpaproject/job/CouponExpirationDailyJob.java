@@ -1,4 +1,4 @@
-package org.example.couponjpaproject.Job;
+package org.example.couponjpaproject.job;
 
 
 import org.example.couponjpaproject.beans.Coupon;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;

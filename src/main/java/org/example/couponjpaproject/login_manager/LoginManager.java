@@ -1,9 +1,8 @@
-package org.example.couponjpaproject.LoginManager;
+package org.example.couponjpaproject.login_manager;
 
 import org.example.couponjpaproject.services.ClientServices;
 import org.example.couponjpaproject.services.CompanyServices;
 import org.example.couponjpaproject.services.CustomerServices;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.example.couponjpaproject.services.AdminServices;
 
 import org.springframework.stereotype.Component;

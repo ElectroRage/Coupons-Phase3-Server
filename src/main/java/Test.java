@@ -1,6 +1,6 @@
-import org.example.couponjpaproject.Job.CouponExpirationDailyJob;
-import org.example.couponjpaproject.LoginManager.ClientType;
-import org.example.couponjpaproject.LoginManager.LoginManager;
+import org.example.couponjpaproject.job.CouponExpirationDailyJob;
+import org.example.couponjpaproject.login_manager.ClientType;
+import org.example.couponjpaproject.login_manager.LoginManager;
 import org.example.couponjpaproject.beans.Category;
 import org.example.couponjpaproject.beans.Company;
 import org.example.couponjpaproject.beans.Coupon;
@@ -10,7 +10,6 @@ import org.example.couponjpaproject.services.CustomerServices;
 import org.example.couponjpaproject.services.AdminServices;
 import org.example.couponjpaproject.services.CompanyServices;
 import org.example.couponjpaproject.services.exceptions.*;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class Test implements CommandLineRunner {
+public class Test { //implements CommandLineRunner
 
     private CouponExpirationDailyJob job;
     private LoginManager loginManager;
@@ -32,7 +31,7 @@ public class Test implements CommandLineRunner {
     }
 
 
-    @Override
+   // @Override
     public void run(String... args) {
         // go through admin service again
         // need to check all the delete methods and how they work by accociation
@@ -147,7 +146,7 @@ public class Test implements CommandLineRunner {
 //         companyServices.addCoupon(coupon1T);
         Coupon coupon2 = new Coupon(tCompany, Category.Electricity, "Heater at 20% off", "Cheaper heater!",
                 new Date(125, 6, 11), new Date(124, 9, 12), 5, 88.5, "heater.jpg");
-        ;
+
         Coupon coupon3 = new Coupon(tCompany, Category.Food, "Hamburger at 20% off", "Cheaper Hamburger!",
                 new Date(125, 6, 11), new Date(124, 9, 2), 1, 65.6, "Hamburger.jpg");
         companyServices.addCoupon(coupon1);
@@ -214,8 +213,8 @@ public class Test implements CommandLineRunner {
         customerServices.purchaseCoupon(coupon2);
         customerServices.purchaseCoupon(coupon3);
         Company tCompany = testServices.getOneCompany(1);
-        Coupon coupon4 = new Coupon(tCompany, Category.Food, "Dominos Pizza discount", "Cheaper Pizza!",
-                new Date(124, 6, 11), new Date(124, 7, 1), 5, 55.9, "dominos.jpg");
+//        Coupon coupon4 = new Coupon(tCompany, Category.Food, "Dominos Pizza discount", "Cheaper Pizza!",
+//                new Date(124, 6, 11), new Date(124, 7, 1), 5, 55.9, "dominos.jpg");
         //duplicate coupon;
 //        customerServices.purchaseCoupon(coupon1);
         // Out of Date purchase
@@ -278,7 +277,6 @@ public class Test implements CommandLineRunner {
         testServices.purchaseExpiredCoupon(1, 5);
         testServices.purchaseExpiredCoupon(1, 6);
     }
-
 
 
 }
