@@ -37,18 +37,18 @@ public class AdminController extends ClientController {
         service.updateCompany(company);
     }
 
-    @DeleteMapping("/company")
-    public void deleteCompany(int companyId) throws CompanyMayNotExistException {
+    @DeleteMapping("/company/{companyId}")
+    public void deleteCompany(@PathVariable int companyId) throws CompanyMayNotExistException {
         service.deleteCompany(companyId);
     }
 
     @GetMapping("/allcompanies")
-    public List<Company> getAllCompanies(){
-        return  service.getAllCompanies();
+    public List<Company> getAllCompanies() {
+        return service.getAllCompanies();
     }
 
-    @GetMapping("/company")
-    public Company getOneCompany(int companyId) throws CompanyMayNotExistException {
+    @GetMapping("/company?{companyId}")
+    public Company getOneCompany(@PathVariable int companyId) throws CompanyMayNotExistException {
         return service.getOneCompany(companyId);
     }
 
@@ -62,21 +62,20 @@ public class AdminController extends ClientController {
         service.updateCustomer(customer);
     }
 
-    @DeleteMapping("/customer")
-    public void deleteCustomer(int customerId){
+    @DeleteMapping("/customer/{customerId}")
+    public void deleteCustomer(@PathVariable int customerId) {
         service.deleteCustomer(customerId);
     }
 
     @GetMapping("/allcustomers")
-    public List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers() {
         return service.getAllCustomers();
     }
 
-    @GetMapping("customer")
-    public Customer getOneCustomer(int customerId) throws CustomerMayNotExistException {
+    @GetMapping("/customer/{customerId}")
+    public Customer getOneCustomer(@PathVariable int customerId) throws CustomerMayNotExistException {
         return service.getOneCustomer(customerId);
     }
-
 
 
 }

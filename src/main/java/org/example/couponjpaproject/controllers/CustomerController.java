@@ -18,6 +18,9 @@ public class CustomerController extends ClientController {
     CustomerServices service;
 
     //Class needs to be tested
+
+    //TODO: apparantely this needs to be tested, additionally I need to check the error handling
+
     public CustomerController(CustomerServices service) {
         this.service = service;
     }
