@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import jakarta.annotation.PreDestroy;
+import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TokenManager {
 
-    private ConcurrentHashMap<String, String> activeTokens;
+    private final ConcurrentHashMap<String, String> activeTokens;
 
     public TokenManager(ConcurrentHashMap<String, String> activeTokens) {
         this.activeTokens = activeTokens;
@@ -66,7 +67,7 @@ public class TokenManager {
         String activetoken = token.substring(6);
         try {
             activeTokens.remove(activetoken);
-        } catch (Exception e) {
+        } catch (InvalidTokenException e) {
             System.out.println("Invalid Token: " + e.getMessage());
         }
 
