@@ -64,9 +64,9 @@ public class TokenManager {
     }
 
     public void logout(String token) {
-        String activetoken = token.substring(6);
+        String activeToken = token.substring(6);
         try {
-            activeTokens.remove(activetoken);
+            activeTokens.remove(activeToken);
         } catch (InvalidTokenException e) {
             System.out.println("Invalid Token: " + e.getMessage());
         }
