@@ -16,7 +16,7 @@ public class AuthExceptionHandler {
     }
 
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<String> handleTokenInvalidException(InvalidTokenException e) {
+    public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 

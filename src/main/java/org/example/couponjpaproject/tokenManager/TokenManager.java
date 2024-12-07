@@ -50,27 +50,36 @@ public class TokenManager {
 
     }
 
-    public String tokenGenerator(String email) {
-        int expTimeMillis = 30 * 60 * 1000;// 30 min
+    public String tokenGenerator(String email, String clientType) {
+        //TODO:return to 30m
+        int expTimeMillis = 1000*60*230;// 30 min
         String token = JWT.create()
                 .withIssuer("CouponProject E.O")
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expTimeMillis))
                 .withClaim("user", email)
+                .withClaim("type", clientType)
                 //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
         activeTokens.put(email, token);
         return "Bearer " + token;
     }
 
-    public void logout(String token) {
-        String activeToken = token.substring(6);
-        try {
+    public void logout(String token) throws InvalidTokenException {
+        String activeToken = token.replace("Bearer ","");
+        if (!activeTokens.containsKey(activeToken)) {
+            throw new InvalidTokenException();
+        } else
             activeTokens.remove(activeToken);
-        } catch (InvalidTokenException e) {
-            System.out.println("Invalid Token: " + e.getMessage());
-        }
 
+    }
+
+    //This method will recieve a validation request apon each travel in our webpage
+    public boolean validateToken(String email, String token) throws InvalidTokenException {
+        if (activeTokens.containsKey(email)) {
+            return activeTokens.get(email).equals(token.replace("Bearer ",""));
+        }
+        throw new InvalidTokenException();
 
     }
 }

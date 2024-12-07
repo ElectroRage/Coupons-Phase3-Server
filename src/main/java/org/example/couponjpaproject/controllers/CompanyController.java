@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/company/")
-public class CompanyController extends ClientController {
+public class CompanyController {
 
     CompanyServices service;
 
@@ -22,9 +22,9 @@ public class CompanyController extends ClientController {
         this.service = service;
     }
 
-    @Override
-    @PostMapping("/login")
-    public boolean login(String email, String password) {return false;}
+//    @Override
+//    @PostMapping("/login")
+//    public boolean login(String email, String password) {return false;}
 
     @PostMapping("/add")
     public void addCoupon(@RequestBody Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
@@ -56,7 +56,7 @@ public class CompanyController extends ClientController {
         return service.getCompanyCoupons(maxPrice);
     }
 
-    @GetMapping
+    @GetMapping("details")
     public Company getDetails() {
         return service.getCompanyDetails();
     }
