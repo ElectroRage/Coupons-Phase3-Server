@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class AdminController extends ClientController {
+public class AdminController{
 
     AdminServices service;
 
@@ -23,11 +23,6 @@ public class AdminController extends ClientController {
         this.service = service;
     }
 
-    @Override
-    //@PostMapping("/login")
-    public boolean login(@RequestParam String email, String password) {
-        return false;
-    }
 
     @PostMapping("/company")
     public ResponseEntity<Company> addCompany(@RequestBody Company company) throws CompanyAlreadyExistsException {

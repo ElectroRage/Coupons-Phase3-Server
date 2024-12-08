@@ -13,7 +13,7 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin
-public class CustomerController extends ClientController {
+public class CustomerController   {
 
     CustomerServices service;
 
@@ -23,11 +23,6 @@ public class CustomerController extends ClientController {
 
     public CustomerController(CustomerServices service) {
         this.service = service;
-    }
-
-    @Override
-    public boolean login(String email, String password) {
-        return false;
     }
 
 

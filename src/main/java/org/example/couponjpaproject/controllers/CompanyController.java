@@ -22,9 +22,6 @@ public class CompanyController {
         this.service = service;
     }
 
-//    @Override
-//    @PostMapping("/login")
-//    public boolean login(String email, String password) {return false;}
 
     @PostMapping("/add")
     public void addCoupon(@RequestBody Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {

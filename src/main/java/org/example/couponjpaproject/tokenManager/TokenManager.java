@@ -55,10 +55,10 @@ public class TokenManager {
         int expTimeMillis = 1000*60*230;// 30 min
         String token = JWT.create()
                 .withIssuer("CouponProject E.O")
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expTimeMillis))
                 .withClaim("user", email)
                 .withClaim("type", clientType)
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + expTimeMillis))
                 //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
         activeTokens.put(email, token);
