@@ -1,5 +1,6 @@
 package org.example.couponjpaproject.controllers.handlers;
 
+import org.example.couponjpaproject.controllers.AuthController;
 import org.example.couponjpaproject.login_manager.loginExceptions.InvalidLoginException;
 import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
 import org.springframework.http.HttpStatus;
@@ -7,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = {AuthController.class})
 public class AuthExceptionHandler {
 
     @ExceptionHandler(InvalidLoginException.class)
@@ -22,6 +23,6 @@ public class AuthExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

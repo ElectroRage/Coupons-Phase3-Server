@@ -1,5 +1,7 @@
 package org.example.couponjpaproject.beans;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.couponjpaproject.beans.Category;
 import java.sql.Date;
@@ -13,6 +15,7 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
+    @JsonBackReference
     private Company company;
     @Enumerated(EnumType.ORDINAL)
     private Category category;

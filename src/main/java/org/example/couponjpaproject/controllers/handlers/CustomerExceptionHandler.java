@@ -1,6 +1,7 @@
 package org.example.couponjpaproject.controllers.handlers;
 
 
+import org.example.couponjpaproject.controllers.CompanyController;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = CompanyController.class)
 public class CustomerExceptionHandler {
 
     @ExceptionHandler(OwnedCouponException.class)
@@ -25,6 +26,6 @@ public class CustomerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 }

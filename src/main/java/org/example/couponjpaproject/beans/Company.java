@@ -1,5 +1,7 @@
 package org.example.couponjpaproject.beans;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class Company {
     private String email;
     private String password;
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Coupon> coupons;
 
 
