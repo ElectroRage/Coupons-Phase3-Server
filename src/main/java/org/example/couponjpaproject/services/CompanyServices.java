@@ -56,10 +56,11 @@ public class CompanyServices implements ClientServices {
         }
     }
 
-    public void deleteCoupon(int couponId) throws CouponMayNotExistException {
+    public boolean deleteCoupon(int couponId) throws CouponMayNotExistException {
         if (cupRep.existsById(couponId)) {
             cupRep.deleteCouponAssociation(couponId);
             cupRep.deleteById(couponId);
+            return true;
         } else
             throw new CouponMayNotExistException("Coupon May Not Exist,Check Credentials.");
     }

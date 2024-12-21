@@ -1,9 +1,11 @@
 package org.example.couponjpaproject.beans;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.couponjpaproject.beans.Category;
+
 import java.sql.Date;
 import java.util.Set;
 
@@ -27,6 +29,7 @@ public class Coupon {
     private double price;
     private String image;
     @ManyToMany(mappedBy = "coupons")
+    @JsonIgnore
     private Set<Customer> customers;
 
 

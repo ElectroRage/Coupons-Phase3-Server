@@ -19,7 +19,7 @@ public class Company {
     private String email;
     private String password;
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Coupon> coupons;
 
 

@@ -19,7 +19,7 @@ public class CorsFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // Every Address can go to every endpoint on our server.
         response.setHeader("Access-Control-Allow-Origin", "*");
-        // "Options is the client asking "Hey what am i allowed to do here, Thanks!".
+        //"Options is the client asking "Hey what am i allowed to do here, Thanks!".
         // What Methods can be used by the client
         response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, DELETE, POST, PUT, HEAD");
         response.setHeader("Access-Control-Allow-Headers",

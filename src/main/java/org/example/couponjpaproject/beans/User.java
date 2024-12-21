@@ -1,11 +1,17 @@
 package org.example.couponjpaproject.beans;
-
-import org.example.couponjpaproject.login_manager.ClientType;
+import java.time.Instant;
 
 public class User {
     private String email;
     private String password;
     private String clientType;
+    private Instant lastRequest;
+
+
+    public User(String clientType, Instant lastRequest) {
+        this.clientType = clientType;
+        this.lastRequest = lastRequest;
+    }
 
     public User(String email, String password, String clientType) {
         this.email = email;
@@ -13,6 +19,9 @@ public class User {
         this.clientType = clientType;
     }
 
+    public Instant getLastRequest() {
+        return lastRequest;
+    }
 
     public String getEmail() {
         return email;
@@ -32,5 +41,9 @@ public class User {
 
     public String getClientType() {
         return clientType;
+    }
+
+    public void setLastRequest(Instant lastRequest) {
+        this.lastRequest = lastRequest;
     }
 }

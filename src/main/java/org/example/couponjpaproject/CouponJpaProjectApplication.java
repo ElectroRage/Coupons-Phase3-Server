@@ -1,5 +1,6 @@
 package org.example.couponjpaproject;
 
+import org.example.couponjpaproject.beans.User;
 import org.example.couponjpaproject.tokenManager.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -29,7 +30,7 @@ public class CouponJpaProjectApplication {
     }
 
     @Bean
-    public ConcurrentHashMap<String,String> activeTokens() {
+    public ConcurrentHashMap<String, User> activeTokens() {
         return new ConcurrentHashMap<>();
     }
 

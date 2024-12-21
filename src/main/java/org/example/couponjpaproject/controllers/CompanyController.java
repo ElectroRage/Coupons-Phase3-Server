@@ -7,13 +7,15 @@ import org.example.couponjpaproject.services.CompanyServices;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.CouponMayAlreadyExistException;
 import org.example.couponjpaproject.services.exceptions.CouponMayNotExistException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/company/")
+@RequestMapping("company")
 public class CompanyController {
 
     CompanyServices service;
@@ -24,18 +26,20 @@ public class CompanyController {
 
 
     @PostMapping("/add")
-    public void addCoupon(@RequestBody Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
+    public ResponseEntity<Coupon> addCoupon(@RequestBody Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
         service.addCoupon(coupon);
+        return ResponseEntity.status(HttpStatus.CREATED).body(coupon);
+
     }
 
-    @PatchMapping()
+    @PatchMapping("/update")
     public void updateCoupon(@RequestBody Coupon coupon) throws CouponMayNotExistException {
         service.updateCoupon(coupon);
     }
 
-    @DeleteMapping()
-    public void deleteCoupon(int couponId) throws CouponMayNotExistException {
-        service.deleteCoupon(couponId);
+    @DeleteMapping("/{couponId}")
+    public boolean deleteCoupon(@PathVariable int couponId) throws CouponMayNotExistException {
+        return service.deleteCoupon(couponId);
     }
 
     @GetMapping("all")

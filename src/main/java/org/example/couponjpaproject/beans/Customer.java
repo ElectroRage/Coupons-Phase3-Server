@@ -1,6 +1,7 @@
 package org.example.couponjpaproject.beans;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 

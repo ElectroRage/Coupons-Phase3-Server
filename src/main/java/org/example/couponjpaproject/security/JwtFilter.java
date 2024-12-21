@@ -5,27 +5,28 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.couponjpaproject.beans.User;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-@Order(2)
+@Order(3)
 public class JwtFilter extends OncePerRequestFilter {
 
     //This is the list of the currently active users on the website, every token has only 30 min of active time
     // and will be removed by a job Thread at its expiration.
-    private final ConcurrentHashMap<String, String> activeTokens;
+    private final ConcurrentHashMap<String, User> activeTokens;
 
-    public JwtFilter(ConcurrentHashMap<String, String> activeTokens) {
+    public JwtFilter(ConcurrentHashMap<String, User> activeTokens) {
         this.activeTokens = activeTokens;
     }
 
-    //TODO:maybe need to write more checks here.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException {
@@ -34,6 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // we want the authorization header as it contains our token
             // currently still coded in JWT
             String token = request.getHeader("Authorization").replace("Bearer ", "");
+            System.out.println(token);
             if (activeTokens.contains(token)) {
                 //we want to work with the data in the token so its time to decode it
                 //The convention is to start every token with "Bearer " so we need to start by removing it.
@@ -60,7 +62,7 @@ public class JwtFilter extends OncePerRequestFilter {
     //Currently set to filter nothing.
     protected boolean shouldNotFilter(HttpServletRequest request) {
 
-        return request.getServletPath().startsWith("/");
+        return request.getServletPath().startsWith("/login");
     }
 
     /*

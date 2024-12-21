@@ -4,10 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import jakarta.annotation.PreDestroy;
+import org.example.couponjpaproject.beans.User;
 import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,14 +18,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TokenManager {
 
-    private final ConcurrentHashMap<String, String> activeTokens;
+    private final ConcurrentHashMap<String, User> activeTokens;
 
-    public TokenManager(ConcurrentHashMap<String, String> activeTokens) {
+    public TokenManager(ConcurrentHashMap<String, User> activeTokens) {
         this.activeTokens = activeTokens;
     }
 
 
     @PreDestroy
+    //When Service Shuts-down
     public void onDestroy() {
         System.out.println("Token cleanup service shutting down");
     }
@@ -30,56 +34,58 @@ public class TokenManager {
     @Scheduled(fixedRate = 10_000)
     public void run() {
         //This can be outside of the loop as this method will initiate itself every 10 seconds
-        Date now = new Date(System.currentTimeMillis());
-        Iterator<Map.Entry<String, String>> iterator = activeTokens.entrySet().iterator();
+        Instant now = Instant.now();
+        //Shadow Copy of hashmap to run over
+        Iterator<Map.Entry<String, User>> iterator = activeTokens.entrySet().iterator();
+        //while there's another entry
         while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
+            //load it
+            Map.Entry<String, User> entry = iterator.next();
             try {
-                Date expiresAt = JWT.decode(entry.getValue()).getExpiresAt();
-                if (expiresAt.before(now)) {
+                Instant lastRequest = entry.getValue().getLastRequest();
+                // if the last request occurred before this instant minus 30minutes
+                if (lastRequest.isBefore(now.minusSeconds(30 * 60))) {
+                    // remove the object from the iterator and at the same time from the hashmap.
                     iterator.remove();
-                    System.out.println("Removed expired token: " + entry.getValue());
+                    System.out.println("Removed expired token: " + entry.getKey().replace("Bearer ", ""));
                 }
-            } catch (JWTDecodeException e) {
-                System.out.println(e.getMessage());
+            } catch (RuntimeException e) {
+                // If There's an error with the information recieved, throw an exception and remove the user.
                 iterator.remove();
-                System.out.println("Removed Invalid token: " + entry.getValue());
+                System.out.println("An unknown Error has occurred");
             }
 
         }
-
     }
 
     public String tokenGenerator(String email, String clientType) {
-        //TODO:return to 30m
-        int expTimeMillis = 1000*60*230;// 30 min
+        Instant now = Instant.now();
         String token = JWT.create()
                 .withIssuer("CouponProject E.O")
                 .withClaim("user", email)
-                .withClaim("type", clientType)
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expTimeMillis))
+                .withIssuedAt(now)
                 //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
-        activeTokens.put(email, token);
+        User userData = new User(clientType, now);
+        activeTokens.put(token, userData);
         return "Bearer " + token;
     }
 
     public void logout(String token) throws InvalidTokenException {
-        String activeToken = token.replace("Bearer ","");
+        String activeToken = token.replace("Bearer ", "");
         if (!activeTokens.containsKey(activeToken)) {
             throw new InvalidTokenException();
         } else
-            activeTokens.remove(activeToken);
+            removeToken(activeToken);
 
     }
 
-    //This method will recieve a validation request apon each travel in our webpage
-    public boolean validateToken(String email, String token) throws InvalidTokenException {
-        if (activeTokens.containsKey(email)) {
-            return activeTokens.get(email).equals(token.replace("Bearer ",""));
-        }
-        throw new InvalidTokenException();
+
+    //we'll use this method for token removal in other classes
+    public void removeToken(String token) {
+        activeTokens.remove(token);
 
     }
+
+
 }

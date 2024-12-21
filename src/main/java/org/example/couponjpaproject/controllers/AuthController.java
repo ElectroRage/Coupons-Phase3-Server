@@ -33,9 +33,5 @@ public class AuthController {
         tokenManager.logout(token);
     }
 
-    @PostMapping("validate")
-    public boolean validateToken(String token,String email) {
-        return tokenManager.validateToken(token, email);
-    }
 
 }
