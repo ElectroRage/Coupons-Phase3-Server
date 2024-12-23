@@ -2,7 +2,6 @@ package org.example.couponjpaproject.tokenManager;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import jakarta.annotation.PreDestroy;
 import org.example.couponjpaproject.beans.User;
 import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
@@ -10,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,10 +42,12 @@ public class TokenManager {
             try {
                 Instant lastRequest = entry.getValue().getLastRequest();
                 // if the last request occurred before this instant minus 30minutes
-                if (lastRequest.isBefore(now.minusSeconds(30 * 60))) {
+                //seconds
+                int timeout = 30*60;
+                if (lastRequest.isBefore(now.minusSeconds(timeout))) {
                     // remove the object from the iterator and at the same time from the hashmap.
                     iterator.remove();
-                    System.out.println("Removed expired token: " + entry.getKey().replace("Bearer ", ""));
+                    System.out.println("Removed expired token: " + entry.getKey().substring(7));
                 }
             } catch (RuntimeException e) {
                 // If There's an error with the information recieved, throw an exception and remove the user.
@@ -63,6 +63,7 @@ public class TokenManager {
         String token = JWT.create()
                 .withIssuer("CouponProject E.O")
                 .withClaim("user", email)
+                .withClaim("role", clientType)
                 .withIssuedAt(now)
                 //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
@@ -71,19 +72,25 @@ public class TokenManager {
         return "Bearer " + token;
     }
 
-    public void logout(String token) throws InvalidTokenException {
-        String activeToken = token.replace("Bearer ", "");
+    public boolean logout(String token) throws InvalidTokenException {
+        String activeToken = token.substring(7);
         if (!activeTokens.containsKey(activeToken)) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException("Unable to Logout correctly, Invalid Token");
         } else
             removeToken(activeToken);
+        return true;
 
     }
 
+    public boolean validate(String token) {
+        return activeTokens.containsKey(token.substring(7));
+    }
 
     //we'll use this method for token removal in other classes
     public void removeToken(String token) {
         activeTokens.remove(token);
+        System.out.println("Removing: " + token);
+
 
     }
 

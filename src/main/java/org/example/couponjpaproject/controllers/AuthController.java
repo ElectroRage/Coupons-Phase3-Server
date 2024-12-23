@@ -6,9 +6,12 @@ import org.example.couponjpaproject.login_manager.ClientType;
 import org.example.couponjpaproject.login_manager.LoginManager;
 import org.example.couponjpaproject.services.ClientServices;
 import org.example.couponjpaproject.tokenManager.TokenManager;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.nio.file.Path;
 
 
 @RestController
@@ -25,12 +28,16 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody User user) {
         loginManager.login(user.getEmail(), user.getPassword(), ClientType.valueOf(user.getClientType()));
-        return tokenManager.tokenGenerator(user.getEmail(),user.getClientType());
+        return tokenManager.tokenGenerator(user.getEmail(), user.getClientType());
     }
 
-    @PostMapping("/logout")
-    public void logOut(@RequestBody String token) {
-        tokenManager.logout(token);
+    @PostMapping("/logout/{token}")
+    public boolean logOut(@PathVariable String token) {
+        return tokenManager.logout(token);
+    }
+    @PostMapping("validate/{token}")
+    public boolean validate(@PathVariable String token){
+        return tokenManager.validate(token);
     }
 
 

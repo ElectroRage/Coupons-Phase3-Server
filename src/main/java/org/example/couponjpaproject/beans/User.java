@@ -1,4 +1,5 @@
 package org.example.couponjpaproject.beans;
+
 import java.time.Instant;
 
 public class User {
@@ -17,6 +18,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.clientType = clientType;
+        this.lastRequest = Instant.now();
+    }
+
+    public User() {
     }
 
     public Instant getLastRequest() {

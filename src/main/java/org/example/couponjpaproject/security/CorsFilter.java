@@ -26,6 +26,7 @@ public class CorsFilter extends OncePerRequestFilter {
                 "Authorization, Origin, Accept, content-type" +
                         ",Access-Control-Request-Method," +
                         " Access-Control-Request-Headers");
+
         if (request.getMethod().equals("OPTIONS")) {
             //This is called Pre-Flight in the browser,
             // We can think of this as requesting permission for takeoff.

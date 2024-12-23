@@ -9,14 +9,13 @@ import org.example.couponjpaproject.beans.User;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-@Order(3)
+//@Component
+//@Order(2)
 public class JwtFilter extends OncePerRequestFilter {
 
     //This is the list of the currently active users on the website, every token has only 30 min of active time
@@ -27,6 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
         this.activeTokens = activeTokens;
     }
 
+    //TODO:maybe need to write more checks here.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException {
@@ -35,20 +35,13 @@ public class JwtFilter extends OncePerRequestFilter {
             // we want the authorization header as it contains our token
             // currently still coded in JWT
             String token = request.getHeader("Authorization").replace("Bearer ", "");
-            System.out.println(token);
             if (activeTokens.contains(token)) {
                 //we want to work with the data in the token so its time to decode it
                 //The convention is to start every token with "Bearer " so we need to start by removing it.
-                DecodedJWT decodedJWT = JWT.decode(token);
                 //We need to check who issued the token to make sure its us, from here:
-                if (decodedJWT.getIssuer().equals("CouponProject E.O")) {
-                    //if it has been issued by our site, move on to next filter
-                    filterChain.doFilter(request, response);
-                } else {
-                    response.setStatus(401);//Unauthorized status
-                    response.getWriter().write("Unauthorized, please log in!");
-                }
+
             }
+
         } catch (Exception e) {
             // One of the JWT Methods failed and threw an exception which needs to be handled
             response.setStatus(400); // Bad Request
@@ -65,13 +58,5 @@ public class JwtFilter extends OncePerRequestFilter {
         return request.getServletPath().startsWith("/login");
     }
 
-    /*
-    Summary:
-    This filters starts with checking if the current request is authorized to work on our website by
-    requiring the token to exist within our active token list. if it in there we will decode and then make sure
-    its us who issued it to the user. we can also get more information from within it.
-    in this case, we're moving on to the next filter in line.
-    additionally, theres an option to decide where on our website we dont require a filter on, this is set by allowing
-    certain ends points to go unfiltered.
-         */
+
 }
