@@ -32,9 +32,10 @@ public class CompanyController {
 
     }
 
-    @PatchMapping("/update")
-    public void updateCoupon(@RequestBody Coupon coupon) throws CouponMayNotExistException {
+    @PutMapping("/update")
+    public ResponseEntity<Coupon> updateCoupon(@RequestBody Coupon coupon) throws CouponMayNotExistException {
         service.updateCoupon(coupon);
+        return ResponseEntity.status(HttpStatus.OK).body(coupon);
     }
 
     @DeleteMapping("/{couponId}")

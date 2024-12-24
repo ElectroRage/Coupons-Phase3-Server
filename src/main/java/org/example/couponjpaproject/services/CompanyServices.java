@@ -49,7 +49,7 @@ public class CompanyServices implements ClientServices {
     }
 
     public void updateCoupon(Coupon coupon) throws CouponMayNotExistException {
-        if (cupRep.existsById(companyId)) {
+        if (cupRep.existsById(coupon.getId())) {
             cupRep.save(coupon);
         } else {
             throw new CouponMayNotExistException("The Coupon may not exist.");

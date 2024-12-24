@@ -46,7 +46,7 @@ public class AdminController{
         return service.getAllCompanies();
     }
 
-    @GetMapping("/company?{companyId}")
+    @GetMapping("/company/{companyId}")
     public Company getOneCompany(@PathVariable int companyId) throws CompanyMayNotExistException {
         return service.getOneCompany(companyId);
     }
