@@ -7,6 +7,7 @@ import org.example.couponjpaproject.repositories.CouponRepository;
 import org.example.couponjpaproject.repositories.CustomerRepository;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Scope("prototype")
 public class CustomerServices implements ClientServices {
 
     private int customerId;

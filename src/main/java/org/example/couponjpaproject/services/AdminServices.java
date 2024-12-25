@@ -10,6 +10,7 @@ import org.example.couponjpaproject.services.exceptions.CompanyAlreadyExistsExce
 import org.example.couponjpaproject.services.exceptions.CompanyMayNotExistException;
 import org.example.couponjpaproject.services.exceptions.CustomerAlreadyExistsException;
 import org.example.couponjpaproject.services.exceptions.CustomerMayNotExistException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -28,15 +28,17 @@ public class CouponExpirationDailyJob implements Runnable {
             while (!quit) {
                 ArrayList<Coupon> allCoupons = (ArrayList<Coupon>) cupRep.findAll();
                 Date cur = new Date(System.currentTimeMillis());
-                for (int i = allCoupons.size() -1; i >= 0; i--) {
-                    if (allCoupons.get(i).getEndDate().before(cur)) {
-                        int couponId = allCoupons.get(i).getId();
-                        cupRep.deleteCouponAssociation(allCoupons.get(i).getId());
-                        cupRep.deleteById(allCoupons.get(i).getId());
-                        if(!cupRep.existsById(couponId)){
-                            System.out.println("Coupon Id: " + couponId + " has been deleted.");
+                for (int i = allCoupons.size() - 1; i >= 0; i--) {
+                    if (!(allCoupons.get(i).getEndDate().toLocalDate().equals(cur.toLocalDate()))) {
+                        if (allCoupons.get(i).getEndDate().before(cur)) {
+                            int couponId = allCoupons.get(i).getId();
+                            cupRep.deleteCouponAssociation(allCoupons.get(i).getId());
+                            cupRep.deleteById(allCoupons.get(i).getId());
+                            if (!cupRep.existsById(couponId)) {
+                                System.out.println("Coupon Id: " + couponId + " has been deleted.");
+                            }
+                            allCoupons.remove(i);
                         }
-                        allCoupons.remove(i);
                     }
                 }
                 sleep(200);

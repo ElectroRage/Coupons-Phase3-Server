@@ -8,12 +8,14 @@ import org.example.couponjpaproject.repositories.CouponRepository;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.CouponMayAlreadyExistException;
 import org.example.couponjpaproject.services.exceptions.CouponMayNotExistException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Scope("prototype")
 public class CompanyServices implements ClientServices {
 
     private int companyId;
