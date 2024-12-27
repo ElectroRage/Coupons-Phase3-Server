@@ -11,6 +11,7 @@ import org.example.couponjpaproject.services.exceptions.CouponMayNotExistExcepti
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -40,9 +41,12 @@ public class CompanyServices implements ClientServices {
 
     public void addCoupon(Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
         Date curDate = new Date(System.currentTimeMillis());
-        if (coupon.getEndDate().before(curDate)) {
-            throw new CouponIsExpiredException("Cannot Add Expired Coupon.");
+        LocalDate sqlDate = new java.sql.Date(System.currentTimeMillis()).toLocalDate();
+        if (!(coupon.getEndDate().toLocalDate().equals(sqlDate))) {
+            if (coupon.getEndDate().before(curDate)) {
+                throw new CouponIsExpiredException("Cannot Add Expired Coupon.");
 
+            }
         }
         if (cupRep.existsCouponByTitleAndCompany(coupon.getTitle(), coupon.getCompany())) {
             throw new CouponMayAlreadyExistException("This Coupon May Already Exist, Check Credentials.");
@@ -50,8 +54,13 @@ public class CompanyServices implements ClientServices {
         cupRep.save(coupon);
     }
 
-    public void updateCoupon(Coupon coupon) throws CouponMayNotExistException {
+    public void updateCoupon(Coupon coupon) throws CouponMayNotExistException, CouponIsExpiredException {
+        Date curDate = new Date(System.currentTimeMillis());
+        LocalDate sqlDate = new java.sql.Date(System.currentTimeMillis()).toLocalDate();
         if (cupRep.existsById(coupon.getId())) {
+            if (coupon.getEndDate().before(curDate)) {
+                throw new CouponIsExpiredException("Cannot Update To An Expired Date.");
+            }
             cupRep.save(coupon);
         } else {
             throw new CouponMayNotExistException("The Coupon may not exist.");
