@@ -1,6 +1,7 @@
 package org.example.couponjpaproject;
 
 import org.example.couponjpaproject.beans.User;
+import org.example.couponjpaproject.job.CouponExpirationDailyJob;
 import org.example.couponjpaproject.tokenManager.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -18,15 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @EnableScheduling
 public class CouponJpaProjectApplication {
 
-//    private final TokenManager tokenManager;
-//
-//    public CouponJpaProjectApplication(TokenManager tokenManager) {
-//        this.tokenManager = tokenManager;
-//    }
-
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(CouponJpaProjectApplication.class, args);
+        //TODO:Need to start the coupon proccess
     }
 
     @Bean

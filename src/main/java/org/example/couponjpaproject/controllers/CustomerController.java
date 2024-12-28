@@ -7,6 +7,7 @@ import org.example.couponjpaproject.services.CustomerServices;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
 import org.springdoc.core.service.GenericResponseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +20,20 @@ import java.util.Set;
 @RequestMapping("customer")
 public class CustomerController {
 
-    private final GenericResponseService responseBuilder;
+
+    private final CustomerServices customerServices;
     CustomerServices service;
 
     //Class needs to be tested
 
     //TODO: apparantely this needs to be tested, additionally I need to check the error handling
 
-    public CustomerController(CustomerServices service, GenericResponseService responseBuilder) {
+
+    public CustomerController(CustomerServices service, CustomerServices customerServices) {
         this.service = service;
-        this.responseBuilder = responseBuilder;
+        this.customerServices = customerServices;
     }
+
 
     @PostMapping("/purchase")
     public void purchaseCoupon(@RequestBody Coupon coupon) throws OwnedCouponException, CouponIsExpiredException {
@@ -52,8 +56,8 @@ public class CustomerController {
     }
 
     @GetMapping("details")
-    public ResponseEntity<Customer> details() {
-        return ResponseEntity.status(HttpStatus.FOUND).body(service.getCustomerDetails());
+    public Customer details() {
+        return customerServices.getCustomerDetails();
     }
 
 }

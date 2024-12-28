@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Scope("prototype")
 public class CompanyServices implements ClientServices {
 
     private int companyId;
@@ -30,6 +29,7 @@ public class CompanyServices implements ClientServices {
         this.companyId = 0;
 
     }
+
 
     public boolean login(String email, String password) {
         if (comRep.existsByEmailAndPassword(email, password)) {
@@ -92,5 +92,10 @@ public class CompanyServices implements ClientServices {
         return comRep.findById(companyId).orElseThrow();
     }
 
-
+    @Override
+    public String toString() {
+        return "CompanyServices{" +
+                "companyId=" + companyId +
+                '}';
+    }
 }

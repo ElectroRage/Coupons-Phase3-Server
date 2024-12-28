@@ -27,16 +27,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user) {
-        loginManager.login(user.getEmail(), user.getPassword(), ClientType.valueOf(user.getClientType()));
-        return tokenManager.tokenGenerator(user.getEmail(), user.getClientType());
+        ClientServices service = loginManager.login(user.getEmail(), user.getPassword(), ClientType.valueOf(user.getClientType()));
+        return tokenManager.tokenGenerator(user.getEmail(), user.getClientType(), service);
     }
 
     @PostMapping("/logout/{token}")
     public boolean logOut(@PathVariable String token) {
         return tokenManager.logout(token);
     }
+
     @PostMapping("validate/{token}")
-    public boolean validate(@PathVariable String token){
+    public boolean validate(@PathVariable String token) {
         return tokenManager.validate(token);
     }
 

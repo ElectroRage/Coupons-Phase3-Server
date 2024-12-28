@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-@Scope("prototype")
 public class CustomerServices implements ClientServices {
 
     private int customerId;
@@ -52,6 +52,11 @@ public class CustomerServices implements ClientServices {
         customer.getCoupons().add(coupon);
         cusRep.save(customer);
 
+    }
+
+    //new method for getting all coupons to show in the main page
+    public List<Coupon> getAllCoupons() {
+        return cupRep.findAll().stream().filter(c -> !getCustomerDetails().getCoupons().contains(c)).collect(Collectors.toList());
     }
 
     public Set<Coupon> getCustomerCoupons() {

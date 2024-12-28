@@ -3,6 +3,7 @@ package org.example.couponjpaproject.job;
 
 import org.example.couponjpaproject.beans.Coupon;
 import org.example.couponjpaproject.repositories.CouponRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 
@@ -41,7 +42,7 @@ public class CouponExpirationDailyJob implements Runnable {
                         }
                     }
                 }
-                sleep(200);
+                sleep(1000 * 60 * 60 * 8); // 8hrs
             }
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());

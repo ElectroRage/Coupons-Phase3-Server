@@ -1,5 +1,7 @@
 package org.example.couponjpaproject.beans;
 
+import org.example.couponjpaproject.services.ClientServices;
+
 import java.time.Instant;
 
 public class User {
@@ -7,18 +9,21 @@ public class User {
     private String password;
     private String clientType;
     private Instant lastRequest;
+    private ClientServices client;
 
 
-    public User(String clientType, Instant lastRequest) {
-        this.clientType = clientType;
-        this.lastRequest = lastRequest;
-    }
 
     public User(String email, String password, String clientType) {
         this.email = email;
         this.password = password;
         this.clientType = clientType;
         this.lastRequest = Instant.now();
+    }
+
+    public User(ClientServices client, Instant lastRequest, String clientType) {
+        this.client = client;
+        this.lastRequest = lastRequest;
+        this.clientType = clientType;
     }
 
     public User() {

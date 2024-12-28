@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.annotation.PreDestroy;
 import org.example.couponjpaproject.beans.User;
+import org.example.couponjpaproject.services.ClientServices;
 import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class TokenManager {
                 Instant lastRequest = entry.getValue().getLastRequest();
                 // if the last request occurred before this instant minus 30minutes
                 //seconds
-                int timeout = 30*60;
+                int timeout = 30 * 60;
                 if (lastRequest.isBefore(now.minusSeconds(timeout))) {
                     // remove the object from the iterator and at the same time from the hashmap.
                     iterator.remove();
@@ -58,7 +59,7 @@ public class TokenManager {
         }
     }
 
-    public String tokenGenerator(String email, String clientType) {
+    public String tokenGenerator(String email, String clientType, ClientServices service) {
         Instant now = Instant.now();
         String token = JWT.create()
                 .withIssuer("CouponProject E.O")
@@ -67,7 +68,7 @@ public class TokenManager {
                 .withIssuedAt(now)
                 //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
-        User userData = new User(clientType, now);
+        User userData = new User(service, now, clientType);
         activeTokens.put(token, userData);
         return "Bearer " + token;
     }

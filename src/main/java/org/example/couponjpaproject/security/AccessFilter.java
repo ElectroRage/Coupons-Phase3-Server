@@ -105,10 +105,16 @@ public class AccessFilter extends OncePerRequestFilter {
         }
     }
 
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) {
+//        return request.getServletPath().startsWith("/login");
+//    }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/login");
+        return request.getServletPath().startsWith("/");
     }
+
 
 
 }

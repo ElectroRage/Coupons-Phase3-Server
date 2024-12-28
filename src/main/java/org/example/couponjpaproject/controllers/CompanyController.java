@@ -7,6 +7,8 @@ import org.example.couponjpaproject.services.CompanyServices;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.CouponMayAlreadyExistException;
 import org.example.couponjpaproject.services.exceptions.CouponMayNotExistException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,6 @@ public class CompanyController {
         this.service = service;
     }
 
-
     @PostMapping("/add")
     public ResponseEntity<Coupon> addCoupon(@RequestBody Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
         service.addCoupon(coupon);
@@ -33,7 +34,7 @@ public class CompanyController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Coupon> updateCoupon(@RequestBody Coupon coupon) throws CouponMayNotExistException {
+    public ResponseEntity<Coupon> updateCoupon(@RequestBody Coupon coupon) throws CouponMayNotExistException, CouponIsExpiredException {
         service.updateCoupon(coupon);
         return ResponseEntity.status(HttpStatus.OK).body(coupon);
     }
@@ -60,6 +61,7 @@ public class CompanyController {
 
     @GetMapping("details")
     public Company getDetails() {
+        System.out.println(service.toString());
         return service.getCompanyDetails();
     }
 
