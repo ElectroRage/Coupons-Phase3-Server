@@ -36,11 +36,4 @@ public class CorsFilter extends OncePerRequestFilter {
         }
     }
 
-    /*
-    Summary:
-    This filter is the first in line in every request our website will receive,
-    meaning that at first the request will be granted "permission for take off", when it is sent with "OPTIONS" as
-    its method and then it will pass again with its actual method,
-    and at that point it will be directed to the next filter in line.
-     */
 }

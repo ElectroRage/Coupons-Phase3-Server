@@ -16,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -24,6 +26,10 @@ public class AccessFilter extends OncePerRequestFilter {
 
     private final ConcurrentHashMap<String, User> activeTokens;
     private final TokenManager tokenManager;
+    private final List<String> UNFILTERED_PATHS = Arrays.asList(
+            "/login"
+            , "/general"
+    );
 
     public AccessFilter(ConcurrentHashMap<String, User> activeTokens, TokenManager tokenManager) {
         this.activeTokens = activeTokens;
@@ -71,18 +77,18 @@ public class AccessFilter extends OncePerRequestFilter {
                 //perform check to see if user has the required role for the request
                 if (requestPath.startsWith("/admin/") && !role.equals("Administrator")) {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().write("Access Denied: Admins only");
+                    response.getWriter().write("Access Denied: Unauthorized Request");
                     return;
                 }
                 if (requestPath.startsWith("/company/") && !role.equals("Company")) {
 
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().write("Access Denied: Companies only");
+                    response.getWriter().write("Access Denied: Unauthorized Request");
                     return;
                 }
                 if (requestPath.startsWith("/customer/") && !role.equals("Customer")) {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().write("Access Denied: Customers only");
+                    response.getWriter().write("Access Denied: Unauthorized Request");
                     return;
 
                 }
@@ -98,23 +104,20 @@ public class AccessFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            // One of the JWT Methods failed and threw an exception which needs to be handled
-            response.setStatus(400); // Bad Request
-            response.getWriter().write("Bad Request.. Please Check Your Credentials.");
+            try {
+                response.getWriter().write(e.getMessage().split(":")[2]);
+            } catch (Exception e2) {
+                response.setStatus(400); // Bad Request
+                response.getWriter().write(e.getMessage());
+            }
 
         }
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) {
-//        return request.getServletPath().startsWith("/login");
-//    }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/");
+        String servletPath = request.getServletPath();
+        return UNFILTERED_PATHS.stream().anyMatch(servletPath::startsWith);
     }
-
-
 
 }

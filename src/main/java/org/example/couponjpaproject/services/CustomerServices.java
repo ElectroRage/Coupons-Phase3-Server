@@ -54,10 +54,7 @@ public class CustomerServices implements ClientServices {
 
     }
 
-    //new method for getting all coupons to show in the main page
-    public List<Coupon> getAllCoupons() {
-        return cupRep.findAll().stream().filter(c -> !getCustomerDetails().getCoupons().contains(c)).collect(Collectors.toList());
-    }
+
 
     public Set<Coupon> getCustomerCoupons() {
         return getCustomerDetails().getCoupons();
