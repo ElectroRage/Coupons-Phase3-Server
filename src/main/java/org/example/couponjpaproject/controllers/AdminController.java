@@ -31,9 +31,10 @@ public class AdminController{
         return ResponseEntity.status(HttpStatus.CREATED).body(company);
     }
 
-    @PatchMapping("/company")
-    public void updateCompany(@RequestBody Company company) throws CompanyMayNotExistException {
-        service.updateCompany(company);
+    @PutMapping("/company")
+    public ResponseEntity<Company> updateCompany(@RequestBody Company company) throws CompanyMayNotExistException {
+      service.updateCompany(company);
+      return ResponseEntity.status(HttpStatus.OK).body(company);
     }
 
     @DeleteMapping("/company/{companyId}")
@@ -56,9 +57,11 @@ public class AdminController{
         service.addCustomer(customer);
     }
 
-    @PatchMapping("/customer")
-    public void updateCustomer(@RequestBody Customer customer) throws CustomerMayNotExistException {
+    @PutMapping("/customer")
+    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) throws CustomerMayNotExistException {
         service.updateCustomer(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(customer);
+
     }
 
     @DeleteMapping("/customer/{customerId}")
