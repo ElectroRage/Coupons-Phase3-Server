@@ -27,8 +27,8 @@ public class AccessFilter extends OncePerRequestFilter {
     private final ConcurrentHashMap<String, User> activeTokens;
     private final TokenManager tokenManager;
     private final List<String> UNFILTERED_PATHS = Arrays.asList(
-            "/login"
-            , "/general"
+            "/login",
+             "/general"
     );
 
     public AccessFilter(ConcurrentHashMap<String, User> activeTokens, TokenManager tokenManager) {

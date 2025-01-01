@@ -70,7 +70,7 @@ public class TokenManager {
                 .sign(Algorithm.none());
         User userData = new User(service, now, clientType);
         activeTokens.put(token, userData);
-        return "Bearer " + token;
+        return token;
     }
 
     public boolean logout(String token) throws InvalidTokenException {
