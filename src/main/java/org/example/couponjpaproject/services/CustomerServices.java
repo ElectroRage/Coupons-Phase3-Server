@@ -9,6 +9,7 @@ import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;

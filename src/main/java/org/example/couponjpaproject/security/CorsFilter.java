@@ -32,7 +32,7 @@ public class CorsFilter extends OncePerRequestFilter {
             // We can think of this as requesting permission for takeoff.
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
-            filterChain.doFilter(request, response);// move on to next filter
+             filterChain.doFilter(request, response);// move on to next filter
         }
     }
 
