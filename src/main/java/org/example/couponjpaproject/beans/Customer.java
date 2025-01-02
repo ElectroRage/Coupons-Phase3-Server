@@ -43,7 +43,7 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", coupons=" +  coupons +
+                ", coupons=" +  coupons.size() +
                 '}';
     }
 

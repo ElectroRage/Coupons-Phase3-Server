@@ -21,19 +21,11 @@ import java.util.Set;
 public class CustomerController {
 
 
-    private final CustomerServices customerServices;
-    CustomerServices service;
+    private CustomerServices service;
 
-    //Class needs to be tested
-
-    //TODO: apparantely this needs to be tested, additionally I need to check the error handling
-
-
-    public CustomerController(CustomerServices service, CustomerServices customerServices) {
+    public CustomerController(CustomerServices service) {
         this.service = service;
-        this.customerServices = customerServices;
     }
-
 
     @PostMapping("/purchase")
     public void purchaseCoupon(@RequestBody Coupon coupon) throws OwnedCouponException, CouponIsExpiredException {
@@ -57,7 +49,8 @@ public class CustomerController {
 
     @GetMapping("details")
     public Customer details() {
-        return customerServices.getCustomerDetails();
+        return service.getCustomerDetails();
     }
+
 
 }

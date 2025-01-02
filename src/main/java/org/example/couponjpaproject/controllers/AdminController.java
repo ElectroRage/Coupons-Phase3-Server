@@ -24,7 +24,6 @@ public class AdminController{
         this.service = service;
     }
 
-
     @PostMapping("/company")
     public ResponseEntity<Company> addCompany(@RequestBody Company company) throws CompanyAlreadyExistsException {
         service.addCompany(company);
