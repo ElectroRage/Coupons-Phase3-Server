@@ -41,8 +41,8 @@ public class CompanyServices implements ClientServices {
 
     public void addCoupon(Coupon coupon) throws CouponMayAlreadyExistException, CouponIsExpiredException {
         Date curDate = new Date(System.currentTimeMillis());
-        LocalDate sqlDate = new java.sql.Date(System.currentTimeMillis()).toLocalDate();
-        if (!(coupon.getEndDate().toLocalDate().equals(sqlDate))) {
+        java.sql.Date curSqlDate = new java.sql.Date(System.currentTimeMillis());
+        if (!(coupon.getEndDate().toLocalDate().equals(curSqlDate.toLocalDate()))) {
             if (coupon.getEndDate().before(curDate)) {
                 throw new CouponIsExpiredException("Cannot Add Expired Coupon.");
 
@@ -56,10 +56,12 @@ public class CompanyServices implements ClientServices {
 
     public void updateCoupon(Coupon coupon) throws CouponMayNotExistException, CouponIsExpiredException {
         Date curDate = new Date(System.currentTimeMillis());
-        LocalDate sqlDate = new java.sql.Date(System.currentTimeMillis()).toLocalDate();
+        java.sql.Date curSqlDate = new java.sql.Date(System.currentTimeMillis());
         if (cupRep.existsById(coupon.getId())) {
-            if (coupon.getEndDate().before(curDate)) {
-                throw new CouponIsExpiredException("Cannot Update To An Expired Date.");
+            if (!(coupon.getEndDate().toLocalDate().equals(curSqlDate.toLocalDate()))) {
+                if (coupon.getEndDate().before(curDate)) {
+                    throw new CouponIsExpiredException("Cannot Update To An Expired Date.");
+                }
             }
             cupRep.save(coupon);
         } else {

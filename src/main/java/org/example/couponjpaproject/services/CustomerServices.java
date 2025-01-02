@@ -6,15 +6,13 @@ import org.example.couponjpaproject.beans.Customer;
 import org.example.couponjpaproject.repositories.CouponRepository;
 import org.example.couponjpaproject.repositories.CustomerRepository;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
+import org.example.couponjpaproject.services.exceptions.CouponOutOfStockException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerServices implements ClientServices {
@@ -37,21 +35,29 @@ public class CustomerServices implements ClientServices {
         return false;
     }
 
-    public void purchaseCoupon(Coupon coupon) throws CouponIsExpiredException, OwnedCouponException {
-        Date curDate = new Date(System.currentTimeMillis());
-        if (coupon.getEndDate().before(curDate)) {
-            throw new CouponIsExpiredException("Cannot Purchase Expired Coupon.");
-
+    public void purchaseCoupon(Coupon coupon) throws CouponIsExpiredException, OwnedCouponException, CouponOutOfStockException {
+        Date   curDate = new Date(System.currentTimeMillis());
+        java.sql.Date curSqlDate = new java.sql.Date(System.currentTimeMillis());
+        if (!(coupon.getEndDate().toLocalDate().equals(curSqlDate.toLocalDate()))) {
+            if (coupon.getEndDate().before(curDate)) {
+                throw new CouponIsExpiredException("Cannot Purchase Expired Coupon.");
+            }
         }
+
         if (cusRep.doCustomerOwn(coupon.getId(), customerId) > 0) {
             throw new OwnedCouponException("This Customer Already owns this coupon.");
         }
         Customer customer = getCustomerDetails();
         //reduces the amount by 1
-        coupon.purchase();
-        cupRep.save(coupon);
-        customer.getCoupons().add(coupon);
-        cusRep.save(customer);
+        if (coupon.getAmount()>0) {
+            coupon.purchase();
+            cupRep.save(coupon);
+            customer.getCoupons().add(coupon);
+            cusRep.save(customer);
+        }else{
+            throw new CouponOutOfStockException("Coupon Ran Out Of Stock.");
+        }
+
 
     }
 

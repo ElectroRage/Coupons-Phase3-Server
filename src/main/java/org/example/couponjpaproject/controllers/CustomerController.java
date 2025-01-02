@@ -3,13 +3,10 @@ package org.example.couponjpaproject.controllers;
 import org.example.couponjpaproject.beans.Category;
 import org.example.couponjpaproject.beans.Coupon;
 import org.example.couponjpaproject.beans.Customer;
+import org.example.couponjpaproject.services.exceptions.CouponOutOfStockException;
 import org.example.couponjpaproject.services.CustomerServices;
 import org.example.couponjpaproject.services.exceptions.CouponIsExpiredException;
 import org.example.couponjpaproject.services.exceptions.OwnedCouponException;
-import org.springdoc.core.service.GenericResponseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +18,14 @@ import java.util.Set;
 public class CustomerController {
 
 
-    private CustomerServices service;
+    private  CustomerServices service;
 
     public CustomerController(CustomerServices service) {
         this.service = service;
     }
 
     @PostMapping("/purchase")
-    public void purchaseCoupon(@RequestBody Coupon coupon) throws OwnedCouponException, CouponIsExpiredException {
+    public void purchaseCoupon(@RequestBody Coupon coupon) throws OwnedCouponException, CouponIsExpiredException, CouponOutOfStockException {
         service.purchaseCoupon(coupon);
     }
 
@@ -43,7 +40,7 @@ public class CustomerController {
     }
 
     @GetMapping("/all/maxprice={maxPrice}")
-    public List<Coupon> getCustomerCoupons(double maxPrice) {
+    public List<Coupon> getCustomerCoupons(@PathVariable double maxPrice) {
         return service.getCustomerCoupons(maxPrice);
     }
 
@@ -51,6 +48,5 @@ public class CustomerController {
     public Customer details() {
         return service.getCustomerDetails();
     }
-
 
 }

@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,12 @@ public class CouponJpaProjectApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(CouponJpaProjectApplication.class, args);
-        //TODO:Need to start the coupon proccess
+
+        //initiate coupon deletion job.
+        CouponExpirationDailyJob couponJob = context.getBean(CouponExpirationDailyJob.class);
+        Thread couponJobThread = new Thread(couponJob);
+        couponJobThread.start();
+
     }
 
     @Bean
