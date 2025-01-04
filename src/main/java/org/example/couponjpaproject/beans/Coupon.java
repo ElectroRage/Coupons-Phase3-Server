@@ -16,8 +16,7 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
     private Company company;
     @Enumerated(EnumType.ORDINAL)
     private Category category;
