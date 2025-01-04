@@ -2,13 +2,11 @@ package org.example.couponjpaproject.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.couponjpaproject.beans.User;
-import org.example.couponjpaproject.tokenManager.TokenExceptions.InvalidTokenException;
 import org.example.couponjpaproject.tokenManager.TokenManager;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -98,7 +96,6 @@ public class AccessFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
 
             } else {
-                //TODO: Make sure the front end re-routes to login page upon this error
                 response.setStatus(401);//Unauthorized status
                 response.getWriter().write("Unauthorized Access: please login again");
             }

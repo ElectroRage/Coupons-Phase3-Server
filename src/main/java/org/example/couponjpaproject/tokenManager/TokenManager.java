@@ -66,7 +66,6 @@ public class TokenManager {
                 .withClaim("user", email)
                 .withClaim("role", clientType)
                 .withIssuedAt(now)
-                //TODO: Could be cool to implement an algorithem if i have enough time.
                 .sign(Algorithm.none());
         User userData = new User(service, now, clientType);
         activeTokens.put(token, userData);
